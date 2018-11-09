@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
-import './style.css';
+// import './style.css';
 import printMe from './print.js';
+import g from './another-module'
 
 
-function component() {
+const component = () => {
   const element = document.createElement('div');
   var btn = document.createElement('button');
 
@@ -16,14 +17,16 @@ function component() {
 
   element.appendChild(btn);
 
+  console.log('got g: ', g);
+
   return element;
 }
 
 document.body.appendChild(component());
 
 if (module.hot) {
-  module.hot.accept('./print.js', function () {
+  module.hot.accept(['./print.js', function () {
     console.log('Accepting the updated printMe module!');
     printMe();
-  })
+  }]);
 }
