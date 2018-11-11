@@ -4,7 +4,7 @@
   "description": "Boilerplate for React with a Hapi server",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --watch",
     "server": "node server.js",
@@ -21,6 +21,7 @@
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
     "clean-webpack-plugin": "^0.1.19",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -40,6 +41,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "dotenv": "^6.1.0",
     "hapi": "^17.7.0",
     "inert": "^5.1.2",
     "joi": "^14.0.4",
