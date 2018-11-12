@@ -1,5 +1,5 @@
 import React from 'react';
 
-const print = () => <div>i am root</div>;
+const print = () => <div>I am root</div>;
 
 export default print;

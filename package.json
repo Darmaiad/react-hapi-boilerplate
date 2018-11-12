@@ -4,7 +4,7 @@
   "description": "Boilerplate for React with a Hapi server",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
     "start": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --watch",
@@ -34,6 +34,7 @@
     "@babel/plugin-transform-async-to-generator": "^7.1.0",
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^0.1.19",
