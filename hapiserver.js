@@ -1,45 +1,69 @@
+const Path = require('path');
 const Hapi = require('hapi');
+const Inert = require('inert');
+const Vision = require('vision')
+const Handlebars = require('handlebars');
 const Joi = require('joi');
 
+// const webpack = require('webpack');
+// const WebpackPlugin = require('hapi-webpack-plugin');
+
+// const config = require('./webpack.config');
+
+
+// const compiler = webpack(config);
+
+console.log(Path.join(__dirname, 'dist') + '/index.html')
+
 const server = Hapi.server({
-  port: 3000,
+  port: 3001,
   host: 'localhost',
-});
-
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: (request, h) => {
-
-    return 'Hello, world!';
-  },
-});
-
-server.route({
-  method: 'GET',
-  path: '/{name}',
-  options: {
-    validate: {
-      params: {
-        name: Joi.string().min(3).max(10),
-      },
+  routes: {
+    files: {
+      relativeTo: __dirname,
     },
   },
-  handler: (request, h) => `Hello, ${encodeURIComponent(request.params.name)}`,
+});
+
+const rootHandler = (request, h) => h.view('index', {
+  message: 'Hello Handlebars!',
+  path: '/dist',
 });
 
 const init = async () => {
+  await server.register([
+    Inert,
+    // Vision,
+  ]);
 
-  await server.register(require('inert'));
+  // await server.route({ method: 'GET', path: '/', handler: rootHandler });
 
-  server.route({
+  // await server.route({
+  //   method: 'GET',
+  //   path: '/dist/app.js',
+  //   handler: (request, h) => h.file(Path.join(__dirname, 'dist') + '/app.js'),
+  // });
+
+  // serve up all static content in public folder
+  await server.route({
     method: 'GET',
-    path: '/hello',
-    handler: (request, h) => {
-
-      return h.file('./src/index.js');
+    path: '/{path*}',
+    handler: {
+      directory: {
+        path: './dist',
+        listing: false,
+        index: true,
+      },
     },
   });
+
+  // await server.route(require(Path.join(__dirname, 'dist') + '/app.js'))
+
+  // await server.views({
+  //   engines: { html: Handlebars },
+  //   relativeTo: __dirname,
+  //   path: Path.join(__dirname, 'src/layout'),
+  // });
 
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);

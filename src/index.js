@@ -1,32 +1,47 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 
-// import './style.css';
-import printMe from './print.js';
-import g from './another-module'
+// // import './style.css';
+// import printMe from './print.js';
+// import g from './another-module'
 
 
-const component = () => {
-  const element = document.createElement('div');
-  var btn = document.createElement('button');
+// const component = () => {
+//   const element = document.createElement('div');
+//   var btn = document.createElement('button');
 
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-  element.classList.add('hello');
+//   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+//   element.classList.add('hello');
 
-  btn.innerHTML = 'Click me and check the console';
-  btn.onclick = printMe;
+//   btn.innerHTML = 'Click me and check the console';
+//   btn.onclick = printMe;
 
-  element.appendChild(btn);
+//   element.appendChild(btn);
 
-  console.log('got g: ', g);
+//   console.log('got g: ', g);
 
-  return element;
-}
+//   return element;
+// }
 
-document.body.appendChild(component());
+// document.body.appendChild(component());
 
-if (module.hot) {
-  module.hot.accept(['./print.js', function () {
-    console.log('Accepting the updated printMe module!');
-    printMe();
-  }]);
-}
+// if (module.hot) {
+//   module.hot.accept(['./print.js', function () {
+//     console.log('Accepting the updated printMe module!');
+//     printMe();
+//   }]);
+// }
+
+import '@babel/polyfill';
+// import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import Root from './components/Root';
+
+render(
+  <div>
+    <div>React is here!</div>
+    <Root />
+  </div>,
+  document.getElementById('AppContainer')
+);
+

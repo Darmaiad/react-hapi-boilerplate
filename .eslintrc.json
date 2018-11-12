@@ -9,5 +9,20 @@
     "plugins": [
         "react",
         "import"
-    ]
+    ],
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true,
+          "experimentalObjectRestSpread": true,
+          "experimentalDecorators": true
+        }
+      },
+      "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "mocha": true
+      }
 }

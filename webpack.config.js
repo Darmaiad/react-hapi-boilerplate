@@ -6,17 +6,18 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    app: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', './src/index.js'],
+    app: './src/index.js',
+    // app: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', './src/index.js'],
   },
   devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
+  // devServer: {
+  //   contentBase: './dist',
+  //   hot: true,
+  // },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Output Management',
+      title: 'React-Hapi Boilerplate',
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
