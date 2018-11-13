@@ -4,13 +4,10 @@
   "description": "Boilerplate for React with a Hapi server",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack.dev.js",
+    "dev-client": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
-    "watch": "webpack --watch",
     "server": "cross-env NODE_ENV=development node server.js",
-    "hapi": "cross-env NODE_ENV=development node hapiserver.js && npm run dev",
-    "strt": "npm-run-all --parallel hapi dev"
+    "start": "npm-run-all --parallel server dev-client"
   },
   "author": "George Filippakis <geo.filippakis@gmail.com> (https://github.com/Darmaiad)",
   "license": "ISC",

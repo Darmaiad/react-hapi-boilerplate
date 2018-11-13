@@ -1,21 +1,77 @@
-const express = require('express');
+const Path = require('path');
+const Hapi = require('hapi');
+const Inert = require('inert');
+const Vision = require('vision')
+const Handlebars = require('handlebars');
+const Joi = require('joi');
+
 const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
+const WebpackPlugin = require('hapi-webpack-plugin');
 
-const config = require('./webpack.dev.js');
+const config = require('./webpack.dev');
 
-const app = express();
 const compiler = webpack(config);
 
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.output.publicPath,
-}));
-
-app.use(require("webpack-hot-middleware")(compiler));
-
-// Serve the files on port 3000.
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!\n');
+const server = Hapi.server({
+  port: 3001,
+  host: 'localhost',
+  routes: {
+    files: {
+      relativeTo: __dirname,
+    },
+  },
 });
+
+// const rootHandler = (request, h) => h.view('index', {
+//   message: 'Hello Handlebars!',
+//   path: '/dist',
+// });
+
+const init = async () => {
+  await server.register([
+    Inert,
+    {
+      plugin: WebpackPlugin,
+      options: { compiler, assets: {}, hot: {} }
+    },
+  ]);
+
+  // await server.route({ method: 'GET', path: '/', handler: rootHandler });
+
+  // await server.route({
+  //   method: 'GET',
+  //   path: '/dist/app.js',
+  //   handler: (request, h) => h.file(Path.join(__dirname, 'dist') + '/app.js'),
+  // });
+
+  // Serve the static content that webpack created
+  await server.route({
+    method: 'GET',
+    path: '/{path*}',
+    handler: {
+      directory: {
+        path: './dist',
+        listing: false,
+        index: true,
+      },
+    },
+  });
+
+  // await server.route(require(Path.join(__dirname, 'dist') + '/app.js'))
+
+  // await server.views({
+  //   engines: { html: Handlebars },
+  //   relativeTo: __dirname,
+  //   path: Path.join(__dirname, 'src/layout'),
+  // });
+
+  await server.start();
+  console.log(`Server running at: ${server.info.uri}`);
+};
+
+process.on('unhandledRejection', (err) => {
+  console.log(err);
+  process.exit(1);
+});
+
+init();

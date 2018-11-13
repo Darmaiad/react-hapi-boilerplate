@@ -1,10 +1,13 @@
-const path = require('path');
+const Path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = require('./config');
 
+console.log('process.env.NODE_ENV:\n', process.env.NODE_ENV)
+
 module.exports = {
+  mode: process.env.NODE_ENV,
   entry: {
     app: './src/index.js',
     // another: './src/another-module.js',
@@ -13,12 +16,12 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Webpackcommon',
-      template: __dirname + '/src/index.html',
+      template: Path.join(__dirname, '/src/index.html'),
     }),
   ],
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: Path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   module: {
@@ -36,5 +39,8 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
     },
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
   },
 };
