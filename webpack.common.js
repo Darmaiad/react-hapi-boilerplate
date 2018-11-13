@@ -1,17 +1,13 @@
 const Path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const webpack = require('webpack');
 
 const config = require('./config');
-
-console.log('process.env.NODE_ENV:\n', process.env.NODE_ENV)
 
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     app: [
-      // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
       './src/index.js',
       // another: './src/another-module.js',
     ],
@@ -22,7 +18,6 @@ module.exports = {
       title: 'RH Boilerplate',
       template: Path.join(__dirname, '/src/index.html'),
     }),
-    // new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
     filename: '[name].js',

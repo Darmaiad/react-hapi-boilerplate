@@ -4,7 +4,6 @@ const Inert = require('inert');
 const Vision = require('vision')
 const Handlebars = require('handlebars');
 const Joi = require('joi');
-
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
