@@ -10,11 +10,11 @@ console.log('process.env.NODE_ENV:\n', process.env.NODE_ENV)
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
-    // app: [
-    //   'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-    //   './src/index.js',
-    //   // another: './src/another-module.js',
-    // ],
+    app: [
+      // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
+      './src/index.js',
+      // another: './src/another-module.js',
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),

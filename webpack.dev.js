@@ -9,7 +9,7 @@ module.exports = merge(common, {
   entry: {
     app: [
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-      './src/index.js',
+      // './src/index.js',
       // another: './src/another-module.js',
     ],
   },

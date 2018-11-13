@@ -8,7 +8,7 @@ const Joi = require('joi');
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
-const config = require('./webpack.dev');
+const config = require('./../../webpack.dev');
 
 const compiler = webpack(config);
 
