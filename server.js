@@ -32,7 +32,16 @@ const init = async () => {
     Inert,
     {
       plugin: WebpackPlugin,
-      options: { compiler, assets: {}, hot: {} }
+      options: {
+        compiler, // Webpack configuration
+        assets: { // Webpack dev-server configuration
+          contentBase: './dist',
+          hot: true,
+        },
+        hot: {
+          // hrm conf
+        },
+      },
     },
   ]);
 
