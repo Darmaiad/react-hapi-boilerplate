@@ -1,30 +1,30 @@
-const Hapi = require('hapi');
-const Inert = require('inert');
-const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
-const HapiAuthCookie = require('hapi-auth-cookie');
-const Crumb = require('crumb');
-const webpack = require('webpack');
-const WebpackPlugin = require('hapi-webpack-plugin');
+import Hapi from 'hapi';
+import Inert from 'inert';
+import Vision from 'vision';
+import HapiSwagger from 'hapi-swagger';
+import HapiAuthCookie from 'hapi-auth-cookie';
+import Crumb from 'crumb';
+import webpack from 'webpack';
+import WebpackPlugin from 'hapi-webpack-plugin';
 
-// Config read from .envs file
-const { port, host } = require('./../../config');
-const configDev = require('./../../webpack.dev');
-const routes = require('./routes');
+// // Config read from .envs file
+// const { port, host } = require('./../../config');
+// const configDev = require('../../webpack.dev');
+import routes from './routes';
 
-const compiler = webpack(configDev);
+const initializeServer = async ({ envConfig, webpackConfig }) => {
+  const compiler = webpack(webpackConfig);
 
-const server = Hapi.server({
-  port,
-  host,
-  routes: {
-    files: {
-      relativeTo: __dirname,
+  const server = Hapi.server({
+    port: envConfig.port,
+    host: envConfig.host,
+    routes: {
+      files: {
+        relativeTo: __dirname,
+      },
     },
-  },
-});
+  });
 
-const init = async () => {
   await server.register([
     Inert,
     Vision, // Needed for swagger
@@ -35,7 +35,7 @@ const init = async () => {
         compiler, // Webpack configuration
         assets: { // Webpack dev-server configuration
           contentBase: './dist',
-          hot: true,
+          hot: process.env.NODE_ENV.toUpperCase() === 'DEVELOPMENT', // HMR only in development
         },
         hot: {}, // Webpack hot-middleware configuration
       },
@@ -103,11 +103,19 @@ const init = async () => {
 
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
+
+  return server;
 };
 
-process.on('unhandledRejection', (err) => {
-  console.log(err);
-  process.exit(1);
-});
+// process.on('unhandledRejection', (err) => {
+//   console.log(err);
+//   process.exit(1);
+// });
 
-init();
+module.exports = async (configuration) => {
+  try {
+    return await initializeServer(configuration);
+  } catch (e) {
+    return console.error(e);
+  }
+};
