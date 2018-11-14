@@ -1,32 +1,51 @@
-const Path = require('path');
-const Hapi = require('hapi');
-const Inert = require('inert');
-const Joi = require('joi');
-const webpack = require('webpack');
-const WebpackPlugin = require('hapi-webpack-plugin');
+import Hapi from 'hapi';
 
-const config = require('./../../../webpack.prod');
+import routes from '../routes';
+import plugins from '../plugins';
 
-const compiler = webpack(config);
+/* eslint no-console: 0 */
 
-const server = Hapi.server({
-  port: 3001,
-  host: 'localhost',
-  routes: {
-    files: {
-      relativeTo: __dirname,
+const initializeServer = async ({ port, host }) => {
+  const server = Hapi.server({
+    port,
+    host,
+    routes: {
+      files: {
+        relativeTo: __dirname,
+      },
     },
-  },
-});
+  });
 
-const init = async () => {
-  await server.register([
-    Inert,
-    {
-      plugin: WebpackPlugin,
-      options: { compiler, assets: {}, hot: {} },
+  await server.register(plugins);
+
+  // Setting the cookie to the server's cache
+  const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+  server.app.cache = cache;
+
+  server.auth.strategy('session', 'cookie', {
+    password: 'KwGv0d828tkWEhI9WOGLg1pqHFXIs3Q4ENAJsnHjgEYgDYzZ', // Generated at random
+    cookie: 'sid-example',
+    redirectTo: '/login',
+    isSecure: false,
+    validateFunc: async (request, session) => {
+      const cached = await cache.get(session.sid);
+      const out = {
+        valid: !!cached,
+      };
+
+      if (out.valid) {
+        out.credentials = cached.account;
+      }
+
+      return out;
     },
-  ]);
+  });
+
+  // Set default auth strategy begore registering any routes you want them to apply on
+  server.auth.default('session');
+
+  // Register the API routes
+  await server.route(routes);
 
   // Serve the static content that webpack created
   await server.route({
@@ -34,7 +53,7 @@ const init = async () => {
     path: '/{path*}',
     handler: {
       directory: {
-        path: './dist',
+        path: './../../../dist',
         listing: false,
         index: true,
       },
@@ -43,6 +62,8 @@ const init = async () => {
 
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
+
+  return server;
 };
 
 process.on('unhandledRejection', (err) => {
@@ -50,4 +71,10 @@ process.on('unhandledRejection', (err) => {
   process.exit(1);
 });
 
-init();
+module.exports = async (configuration) => {
+  try {
+    return await initializeServer(configuration);
+  } catch (e) {
+    return console.error(e);
+  }
+};

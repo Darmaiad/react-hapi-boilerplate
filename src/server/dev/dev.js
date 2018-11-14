@@ -42,8 +42,8 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
   server.auth.strategy('session', 'cookie', {
     password: 'KwGv0d828tkWEhI9WOGLg1pqHFXIs3Q4ENAJsnHjgEYgDYzZ', // Generated at random
     cookie: 'sid-example',
-    redirectTo: false,
-    // redirectTo: '/login',
+    // redirectTo: false,
+    redirectTo: '/login',
     isSecure: false,
     validateFunc: async (request, session) => {
       const cached = await cache.get(session.sid);
@@ -84,10 +84,10 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
   return server;
 };
 
-// process.on('unhandledRejection', (err) => {
-//   console.log(err);
-//   process.exit(1);
-// });
+process.on('unhandledRejection', (err) => {
+  console.log(err);
+  process.exit(1);
+});
 
 module.exports = async (configuration) => {
   try {

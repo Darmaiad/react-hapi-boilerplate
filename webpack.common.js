@@ -2,8 +2,6 @@ const Path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const config = require('./config');
-
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: {

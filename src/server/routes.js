@@ -1,7 +1,5 @@
 const Joi = require('joi');
-const {
-  generate, genericGet, genericPost, logout, login,
-} = require('./manager');
+const { generate, genericGet, genericPost, logout, login } = require('./manager');
 
 const routes = [{
   method: 'GET',

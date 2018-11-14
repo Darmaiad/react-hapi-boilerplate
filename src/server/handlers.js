@@ -27,9 +27,7 @@ const handlers = {
 
   login: async (request, h) => {
     if (request.auth.isAuthenticated) {
-      console.log(request.state);
-      return 'User isAuthenticated';
-      // return h.redirect('/');
+      return h.redirect('/');
     }
 
     let message = '';
@@ -46,12 +44,23 @@ const handlers = {
       }
     }
 
-    if (request.method === 'get') {
-      return 'Login to access this API';
-    }
+    // if (request.method === 'get') {
+    //   return 'Login to access this API';
+    // }
 
-    if (message) {
-      return `message: ${message}`;
+    // if (message) {
+    //   return `message: ${message}`;
+    // }
+
+    if (request.method === 'get' ||
+        message) {
+
+        return '<html><head><title>Login page</title></head><body>' +
+            (message ? '<h3>' + message + '</h3><br/>' : '') +
+            '<form method="post" action="/login">' +
+            'Username: <input type="text" name="username"><br>' +
+            'Password: <input type="password" name="password"><br/>' +
+            '<input type="submit" value="Login"></form></body></html>';
     }
 
     const sid = String(uuid += 1);
@@ -59,7 +68,7 @@ const handlers = {
     await request.server.app.cache.set(sid, { account }, 0);
     request.cookieAuth.set({ sid });
 
-    return true;
+    return h.redirect('/');
   },
 
   logout: async (request, h) => {
