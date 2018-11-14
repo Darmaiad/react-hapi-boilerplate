@@ -10,6 +10,7 @@ const Joi = require('joi');
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
+const routes = require('./routes');
 const config = require('./../../webpack.dev');
 
 const compiler = webpack(config);
@@ -22,63 +23,6 @@ const server = Hapi.server({
       relativeTo: __dirname,
     },
   },
-});
-
-let uuid = 1; // Replace it with v4 or something
-
-const users = {
-  jo: {
-    id: 'jo',
-    password: 'pass',
-    name: 'jo Doe',
-  },
-};
-
-const login = async (request, h) => {
-  if (request.auth.isAuthenticated) {
-    console.log(request.state);
-    return 'User isAuthenticated';
-    // return h.redirect('/');
-  }
-
-  let message = '';
-  let account = null;
-
-  if (request.method === 'post') {
-    if (!request.payload.username || !request.payload.password) {
-      message = 'Missing username or password';
-    } else {
-      account = users[request.payload.username];
-      if (!account || account.password !== request.payload.password) {
-        message = 'Invalid username or password';
-      }
-    }
-  }
-
-  if (request.method === 'get') {
-    return 'Login to access this API';
-  }
-
-  if (message) {
-    return `message: ${message}`;
-  }
-
-  const sid = String(uuid += 1);
-
-  await request.server.app.cache.set(sid, { account }, 0);
-  request.cookieAuth.set({ sid });
-
-  return true;
-};
-
-const logout = (request, h) => {
-  request.server.app.cache.drop(request.state['sid-example'].sid);
-  request.cookieAuth.clear();
-  return h.redirect('/');
-};
-
-const generate = (request, h) => ({
-  crumb: server.plugins.crumb.generate(request, h),
 });
 
 const init = async () => {
@@ -142,78 +86,8 @@ const init = async () => {
   // Set default auth strategy begore registering any routes you want them to apply on
   server.auth.default('session');
 
-  await server.route({
-    method: 'GET',
-    path: '/crumb',
-    options: {
-      tags: ['api'],
-      description: 'Generate crumb token for the given client',
-      notes: 'Generate crumb token for the given client',
-    },
-    handler: generate,
-  });
-
-  server.route([{
-    method: ['POST'],
-    path: '/login',
-    options: {
-      handler: login,
-      auth: { mode: 'try' },
-      // Any request that does not adhere to the session strategy will be redicted to /login
-      // weel, we must prevent this one from redirecting to itself
-      plugins: {
-        'hapi-auth-cookie': { redirectTo: false },
-        crumb: false,
-      },
-      tags: ['api'],
-      validate: {
-        payload: {
-          username: Joi.string(),
-          password: Joi.string(),
-        },
-      },
-    },
-  }, {
-    method: ['GET'],
-    path: '/login',
-    options: {
-      handler: login,
-      auth: { mode: 'try' },
-      plugins: { 'hapi-auth-cookie': { redirectTo: false } },
-      tags: ['api'],
-    },
-  }, {
-    method: 'GET',
-    path: '/logout',
-    options: { handler: logout, tags: ['api'] },
-  }, {
-    method: 'POST',
-    path: '/generic',
-    options: {
-      description: 'generic endpoint desc',
-      notes: 'generic endpoint note',
-      tags: ['api'],
-      validate: {
-        headers: Joi.object({ 'X-CSRF-Token': Joi.string() }).unknown(0).label('Headers'),
-      },
-    },
-    handler: (request, h) => {
-      console.log('POST request.state:\n', request.state);
-      return h.response('Generic reply');
-    },
-  }, {
-    method: 'GET',
-    path: '/generic',
-    options: {
-      description: 'generic endpoint desc',
-      notes: 'generic endpoint note',
-      tags: ['api'],
-    },
-    handler: (request, h) => {
-      console.log('request.state:\n', request.state);
-      return h.response('Generic GET reply');
-    },
-  }]);
+  // Register the API routes
+  await server.route(routes);
 
   // Serve the static content that webpack created
   await server.route({

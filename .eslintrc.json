@@ -24,6 +24,7 @@
         "linebreak-style": [
             "error",
             "windows"
-        ]
+        ],
+        "arrow-parens": 0
     }
 }
