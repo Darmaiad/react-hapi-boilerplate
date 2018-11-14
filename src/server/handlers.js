@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 let uuid = 1; // Replace it with v4 or something
 
 const users = {
@@ -6,6 +8,18 @@ const users = {
     password: 'pass',
     name: 'jo Doe',
   },
+};
+
+// Site that cal simulate third party APIs
+const url = 'https://jsonplaceholder.typicode.com/posts/1';
+
+const getData = async (url) => {
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const handlers = {
@@ -55,7 +69,7 @@ const handlers = {
     // return h.redirect('/');
   },
 
-  genericGet: async (request, h) => h.response('Generic GET reply'),
+  genericGet: async (request, h) => h.response(await getData(url)),
 
   genericPost: async (request, h) => h.response('Generic POST reply'),
 };
