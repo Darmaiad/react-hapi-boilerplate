@@ -1,11 +1,9 @@
-const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const HapiAuthCookie = require('hapi-auth-cookie');
 const Crumb = require('crumb');
-const Handlebars = require('handlebars');
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
