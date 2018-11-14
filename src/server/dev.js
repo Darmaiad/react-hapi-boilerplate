@@ -6,18 +6,19 @@ const HapiSwagger = require('hapi-swagger');
 const HapiAuthCookie = require('hapi-auth-cookie');
 const Crumb = require('crumb');
 const Handlebars = require('handlebars');
-const Joi = require('joi');
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
+// Config read from .envs file
+const { port, host } = require('./../../config');
+const configDev = require('./../../webpack.dev');
 const routes = require('./routes');
-const config = require('./../../webpack.dev');
 
-const compiler = webpack(config);
+const compiler = webpack(configDev);
 
 const server = Hapi.server({
-  port: 3001,
-  host: 'localhost',
+  port,
+  host,
   routes: {
     files: {
       relativeTo: __dirname,

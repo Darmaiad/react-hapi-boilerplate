@@ -21,10 +21,11 @@
         "mocha": true
     },
     "rules": {
+        "arrow-parens": 0,
         "linebreak-style": [
             "error",
             "windows"
         ],
-        "arrow-parens": 0
+        "object-curly-newline": 0
     }
 }
