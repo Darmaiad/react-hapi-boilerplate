@@ -5,7 +5,7 @@ const Joi = require('joi');
 const webpack = require('webpack');
 const WebpackPlugin = require('hapi-webpack-plugin');
 
-const config = require('./../../webpack.prod');
+const config = require('./../../../webpack.prod');
 
 const compiler = webpack(config);
 

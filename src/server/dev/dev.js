@@ -1,23 +1,18 @@
 import Hapi from 'hapi';
-import Inert from 'inert';
-import Vision from 'vision';
-import HapiSwagger from 'hapi-swagger';
-import HapiAuthCookie from 'hapi-auth-cookie';
-import Crumb from 'crumb';
-import webpack from 'webpack';
 import WebpackPlugin from 'hapi-webpack-plugin';
+import webpack from 'webpack';
 
-// // Config read from .envs file
-// const { port, host } = require('./../../config');
-// const configDev = require('../../webpack.dev');
-import routes from './routes';
+import routes from '../routes';
+import plugins from '../plugins';
 
-const initializeServer = async ({ envConfig, webpackConfig }) => {
+/* eslint no-console: 0 */
+
+const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) => {
   const compiler = webpack(webpackConfig);
 
   const server = Hapi.server({
-    port: envConfig.port,
-    host: envConfig.host,
+    port,
+    host,
     routes: {
       files: {
         relativeTo: __dirname,
@@ -26,34 +21,16 @@ const initializeServer = async ({ envConfig, webpackConfig }) => {
   });
 
   await server.register([
-    Inert,
-    Vision, // Needed for swagger
-    HapiAuthCookie,
-    {
+    ...plugins,
+    { // Webpack plugin uses webpack-dev-server/middleware underneath, meaning we only want for development
       plugin: WebpackPlugin,
       options: {
         compiler, // Webpack configuration
         assets: { // Webpack dev-server configuration
           contentBase: './dist',
-          hot: process.env.NODE_ENV.toUpperCase() === 'DEVELOPMENT', // HMR only in development
+          hot: true,
         },
         hot: {}, // Webpack hot-middleware configuration
-      },
-    }, {
-      plugin: HapiSwagger,
-      options: {
-        info: {
-          title: 'Test API Documentation',
-          version: '0.0.3',
-        },
-      },
-    }, {
-      plugin: Crumb,
-      options: {
-        restful: true,
-        cookieOptions: {
-          isSecure: false,
-        },
       },
     },
   ]);

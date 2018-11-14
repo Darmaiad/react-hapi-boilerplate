@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-client": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
-    "dev": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/dev/index.js",
     "prod": "cross-env NODE_ENV=production node src/server/prod.js",
     "start": "npm-run-all --parallel server dev-client"
   },
