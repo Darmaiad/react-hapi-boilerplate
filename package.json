@@ -13,9 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "crumb": "^7.2.2",
     "dotenv": "^6.1.0",
     "handlebars": "^4.0.12",
     "hapi": "^17.7.0",
+    "hapi-auth-cookie": "^9.0.0",
+    "hapi-swagger": "^9.1.2",
     "inert": "^5.1.2",
     "joi": "^14.0.4",
     "lodash": "^4.17.11",
