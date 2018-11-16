@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { generate, genericGet, genericPost, logout, login } = require('./manager');
+const { generate, genericGet, genericPost, logout, login, token } = require('../manager');
 
 const routes = [{
   method: 'GET',
@@ -67,6 +67,55 @@ const routes = [{
     tags: ['api'],
   },
   handler: login,
+}, {
+  method: 'GET',
+  path: '/unrestricted',
+  options: {
+    auth: false,
+    description: 'generic token unprotected endpoint desc',
+    notes: 'generic token unprotected endpoint',
+    tags: ['api'],
+  },
+
+  handler: (request, h) => ({text: 'Token not required'}),
+},
+{
+  method: 'GET',
+  path: '/restricted',
+  options: {
+    description: 'generic token protected endpoint desc',
+    notes: 'generic token protected endpoint',
+    tags: ['api'],
+    validate: {
+      headers: Joi.object({ authorization: Joi.string().label('Token') }).unknown(0).label('Headers'),
+    },
+  },
+  handler: (request, h) => {
+    const response = h.response({ message: 'You used a Valid JWT Token to access /restricted endpoint!' });
+    response.header('Authorization', request.headers.authorization);
+    return response;
+  },
+}, {
+  method: 'POST',
+  path: '/token',
+  options: {
+    auth: false,
+    description: 'get token based on user credentials',
+    notes: 'get token based on user credentials',
+    tags: ['api'],
+    validate: {
+      payload: {
+        username: Joi.string(),
+        password: Joi.string(),
+      },
+    },
+    plugins: {
+      'hapi-auth-cookie': { redirectTo: false },
+      crumb: false,
+    },
+
+  },
+  handler: token,
 }];
 
 module.exports = routes;

@@ -9,7 +9,7 @@ const envConfig = require('./../../../config');
 // Development webpack config
 const webpackConfig = require('./../../../webpack.dev');
 // function that initializes the development server
-const serverInitilizer = require('./dev');
+const serverInitializer = require('./dev');
 
 // Start the development server
-module.exports = serverInitilizer({ envConfig, webpackConfig });
+module.exports = serverInitializer({ envConfig, webpackConfig });

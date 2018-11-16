@@ -2,10 +2,22 @@ import Hapi from 'hapi';
 import WebpackPlugin from 'hapi-webpack-plugin';
 import webpack from 'webpack';
 
-import routes from '../routes';
+import routes from '../routes/routes';
 import plugins from '../plugins';
 
+import sessionConfiguration from '../auth/session/strategy';
+import jwtConfiguration from '../auth/jwt/strategy';
+
 /* eslint no-console: 0 */
+
+const home = (request, h) => {
+
+  return '<html><head><title>Login page</title></head><body><h3>Welcome ' +
+    request.auth.credentials.name +
+    '!</h3><br/><form method="get" action="/logout">' +
+    '<input type="submit" value="Logout">' +
+    '</form></body></html>';
+};
 
 const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) => {
   const compiler = webpack(webpackConfig);
@@ -13,13 +25,16 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
   const server = Hapi.server({
     port,
     host,
-    routes: {
-      files: {
-        relativeTo: __dirname,
-      },
-    },
+    // routes: {
+    //   files: {
+    //     relativeTo: __dirname,
+    //   },
+    // },
   });
 
+
+
+  // Register the plugins
   await server.register([
     ...plugins,
     { // Webpack plugin uses webpack-dev-server/middleware underneath, meaning we only want for development
@@ -39,44 +54,34 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
   const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
   server.app.cache = cache;
 
-  server.auth.strategy('session', 'cookie', {
-    password: 'KwGv0d828tkWEhI9WOGLg1pqHFXIs3Q4ENAJsnHjgEYgDYzZ', // Generated at random
-    cookie: 'sid-example',
-    // redirectTo: false,
-    redirectTo: '/login',
-    isSecure: false,
-    validateFunc: async (request, session) => {
-      const cached = await cache.get(session.sid);
-      const out = {
-        valid: !!cached,
-      };
+  // Name and configure the Authentication strategies
+  server.auth.strategy('session', 'cookie', sessionConfiguration(server));
+  server.auth.strategy('jwt', 'jwt', jwtConfiguration(server));
 
-      if (out.valid) {
-        out.credentials = cached.account;
-      }
-
-      return out;
-    },
-  });
-
-  // Set default auth strategy begore registering any routes you want them to apply on
-  server.auth.default('session');
+  // Set default auth strategies. These strategies will apply to any routes declared AFTER this point
+  server.auth.default({ strategies: ['session', 'jwt'] });
 
   // Register the API routes
   await server.route(routes);
 
+  await server.route([
+    { method: 'GET', path: '/home', options: { handler: home } },
+  ]);
+
+
   // Serve the static content that webpack created
-  await server.route({
-    method: 'GET',
-    path: '/{path*}',
-    handler: {
-      directory: {
-        path: './dist',
-        listing: false,
-        index: true,
-      },
-    },
-  });
+  // await server.route({
+  //   method: 'GET',
+  //   path: '/{path*}',
+  //   handler: {
+  //     directory: {
+  //       path: './dist',
+  //       listing: false,
+  //       index: true,
+  //     },
+  //   },
+  // });
+
 
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);

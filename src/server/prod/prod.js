@@ -1,7 +1,10 @@
 import Hapi from 'hapi';
 
-import routes from '../routes';
+import routes from '../routes/routes';
 import plugins from '../plugins';
+
+import sessionConfiguration from '../auth/session/strategy';
+import jwtConfiguration from '../auth/jwt/strategy';
 
 /* eslint no-console: 0 */
 
@@ -22,26 +25,11 @@ const initializeServer = async ({ port, host }) => {
   const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
   server.app.cache = cache;
 
-  server.auth.strategy('session', 'cookie', {
-    password: 'KwGv0d828tkWEhI9WOGLg1pqHFXIs3Q4ENAJsnHjgEYgDYzZ', // Generated at random
-    cookie: 'sid-example',
-    redirectTo: '/login',
-    isSecure: false,
-    validateFunc: async (request, session) => {
-      const cached = await cache.get(session.sid);
-      const out = {
-        valid: !!cached,
-      };
+  // Name and configure the Authentication strategies
+  server.auth.strategy('session', 'cookie', sessionConfiguration(server));
+  server.auth.strategy('jwt', 'jwt', jwtConfiguration(server));
 
-      if (out.valid) {
-        out.credentials = cached.account;
-      }
-
-      return out;
-    },
-  });
-
-  // Set default auth strategy begore registering any routes you want them to apply on
+  // Set default auth strategies. These strategies will apply to any routes declared AFTER this point
   server.auth.default('session');
 
   // Register the API routes

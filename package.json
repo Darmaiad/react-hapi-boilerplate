@@ -19,12 +19,15 @@
     "handlebars": "^4.0.12",
     "hapi": "^17.7.0",
     "hapi-auth-cookie": "^9.0.0",
+    "hapi-auth-jwt2": "^8.1.0",
     "hapi-swagger": "^9.1.2",
     "inert": "^5.1.2",
     "joi": "^14.0.4",
+    "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
+    "uuid": "^3.3.2",
     "vision": "^5.4.3"
   },
   "devDependencies": {

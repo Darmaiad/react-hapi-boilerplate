@@ -3,11 +3,13 @@ import Vision from 'vision';
 import HapiSwagger from 'hapi-swagger';
 import HapiAuthCookie from 'hapi-auth-cookie';
 import Crumb from 'crumb';
+import HapiAuthJwt2 from 'hapi-auth-jwt2';
 
 const plugins = [
-  Inert,
+  Inert, // Serving of static content
   Vision, // Needed for swagger
   HapiAuthCookie,
+  HapiAuthJwt2,
   {
     plugin: HapiSwagger,
     options: {
@@ -16,7 +18,7 @@ const plugins = [
         version: '0.0.3',
       },
     },
-  }, {
+  }, { // Protection againt CSRF attacks
     plugin: Crumb,
     options: {
       restful: true,

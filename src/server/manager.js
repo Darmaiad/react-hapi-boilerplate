@@ -1,4 +1,4 @@
-const { generate, genericGet, genericPost, logout, login } = require('./handlers');
+const { generate, genericGet, genericPost, logout, login, token } = require('./handlers');
 
 const manager = {
   generate: async (request, h) => {
@@ -36,6 +36,14 @@ const manager = {
   login: async (request, h) => {
     try {
       return await login(request, h);
+    } catch (error) {
+      return error;
+    }
+  },
+
+  token: async (request, h) => {
+    try {
+      return await token(request, h);
     } catch (error) {
       return error;
     }

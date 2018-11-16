@@ -1,16 +1,10 @@
-const axios = require('axios');
+import axios from 'axios';
+import JWT from 'jsonwebtoken'; // Used to sign our content
+import v4 from 'uuid';
 
-let uuid = 1; // Replace it with v4 or something
+import db from './db';
 
-const users = {
-  jo: {
-    id: 'jo',
-    password: 'pass',
-    name: 'jo Doe',
-  },
-};
-
-// Site that cal simulate third party APIs
+// Site that can simulate third party APIs
 const url = 'https://jsonplaceholder.typicode.com/posts/1';
 
 const getData = async (url) => {
@@ -21,6 +15,9 @@ const getData = async (url) => {
     console.log(error);
   }
 };
+
+// use the token as the 'authorization' header in requests
+const privateKey = 'ZNlTx2fMYGOMRdr86FF3N613fF2sxBSmTg3RBNnoxpeHBVPH';
 
 const handlers = {
   generate: async (request, h) => h.response({ crumb: request.plugins.crumb }),
@@ -37,33 +34,23 @@ const handlers = {
       if (!request.payload.username || !request.payload.password) {
         message = 'Missing username or password';
       } else {
-        account = users[request.payload.username];
+        account = db[request.payload.username];
         if (!account || account.password !== request.payload.password) {
           message = 'Invalid username or password';
         }
       }
     }
 
-    // if (request.method === 'get') {
-    //   return 'Login to access this API';
-    // }
-
-    // if (message) {
-    //   return `message: ${message}`;
-    // }
-
-    if (request.method === 'get' ||
-        message) {
-
-        return '<html><head><title>Login page</title></head><body>' +
+    if (request.method === 'get' || message) {
+        return h.response('<html><head><title>Login page</title></head><body>' +
             (message ? '<h3>' + message + '</h3><br/>' : '') +
             '<form method="post" action="/login">' +
             'Username: <input type="text" name="username"><br>' +
             'Password: <input type="password" name="password"><br/>' +
-            '<input type="submit" value="Login"></form></body></html>';
+            '<input type="submit" value="Login"></form></body></html>');
     }
 
-    const sid = String(uuid += 1);
+    const sid = String(v4());
 
     await request.server.app.cache.set(sid, { account }, 0);
     request.cookieAuth.set({ sid });
@@ -81,6 +68,8 @@ const handlers = {
   genericGet: async (request, h) => h.response(await getData(url)),
 
   genericPost: async (request, h) => h.response('Generic POST reply'),
+
+  token: async (request, h) => h.response(JWT.sign(db.jo, privateKey)), // synchronous
 };
 
 module.exports = handlers;
