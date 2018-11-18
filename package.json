@@ -2,7 +2,6 @@
   "name": "react-hapi-boilerplate",
   "version": "1.0.0",
   "description": "Boilerplate for React with a Hapi server",
-  "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/dev/index.js",
     "preprod": "cross-env NODE_ENV=production webpack --config webpack.prod.js ",
@@ -10,7 +9,6 @@
     "start": "npm-run-all --parallel server dev-client"
   },
   "author": "George Filippakis <geo.filippakis@gmail.com> (https://github.com/Darmaiad)",
-  "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "axios": "^0.18.0",
@@ -63,5 +61,21 @@
     "webpack-dev-server": "^3.1.10",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-merge": "^4.1.4"
+  },
+  "keywords": [
+    "react",
+    "hapi",
+    "redux",
+    "react-redux",
+    "nodejs",
+    "javascript",
+    "babel",
+    "webpack"
+  ],
+  "main": "./src/index.js",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Darmaiad/react-hapi-boilerplate.git"
   }
 }
