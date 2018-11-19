@@ -27,6 +27,8 @@
     "lodash": "^4.17.11",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
+    "react-simple-file-input": "^2.1.0",
+    "react-toastr": "^3.0.0",
     "uuid": "^3.3.2",
     "vision": "^5.4.3"
   },
