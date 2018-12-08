@@ -4,10 +4,10 @@ import jwtValidation from './validation';
 const privateKey = 'ZNlTx2fMYGOMRdr86FF3N613fF2sxBSmTg3RBNnoxpeHBVPH';
 
 const jwtStrategy = (server) => ({
-  key: privateKey,
-  validate: jwtValidation,
-  verifyOptions: { algorithms: ['HS256'] },
-  ignoreExpiration: false,
+    key: privateKey,
+    validate: jwtValidation,
+    verifyOptions: { algorithms: ['HS256'] },
+    ignoreExpiration: false,
 });
 
 export default jwtStrategy;

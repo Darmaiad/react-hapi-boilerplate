@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Boilerplate for React with a Hapi server",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/dev/index.js",
+    "hmr": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/hmr/index.js",
     "preprod": "cross-env NODE_ENV=production webpack --config webpack.prod.js ",
     "prod": "cross-env NODE_ENV=production node src/server/prod/index.js",
     "start": "npm-run-all --parallel server dev-client"

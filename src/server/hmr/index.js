@@ -7,9 +7,9 @@ console.log(`Running in: ${ENV} mode`); // eslint-disable-line no-console
 // Env config
 const envConfig = require('./../../../config');
 // Development webpack config
-const webpackConfig = require('./../../../webpack.dev');
+const webpackConfig = require('./../../../webpack/webpack.hmr');
 // function that initializes the development server
-const serverInitializer = require('./dev');
+const serverInitializer = require('./hmr');
 
 // Start the development server
 module.exports = serverInitializer({ envConfig, webpackConfig });
