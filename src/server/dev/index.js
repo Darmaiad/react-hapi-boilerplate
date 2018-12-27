@@ -8,8 +8,8 @@ console.log(`Running in: ${ENV} mode`); // eslint-disable-line no-console
 // Env config
 const config = require('./../../../config');
 
-// function that initializes the production server
-const serverInitializer = require('./prod');
+// function that initializes the development server
+const serverInitializer = require('./dev');
 
-// Start the production server
+// Start the development server
 module.exports = serverInitializer(config);

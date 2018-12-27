@@ -2,7 +2,8 @@
 A complete React/Hapi boilerplate: From environment settings to Redux actions (and everything between), using the latest (at least for this week) tech stack: React16, Hapi17, Webpack4, Babel7 etc. 
 
 ## Installation
-  * Run `npm run dev` to launch the project in development environment.
+  * Run `npm start` to launch the project in development environment (With webpack watch mode).
+  * Run `npm run hmr` to launch the project in development environment with HMR (Auth does not work correctly).
   * Run `npm run prod` to launch the project in a production build. 
 
 ## Description

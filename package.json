@@ -4,9 +4,11 @@
   "description": "Boilerplate for React with a Hapi server",
   "scripts": {
     "hmr": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/hmr/index.js",
-    "preprod": "cross-env NODE_ENV=production webpack --config webpack.prod.js ",
+    "dev-server": "cross-env NODE_ENV=development nodemon --watch src/server/**/* --exec node src/server/dev/index.js",
+    "dev-client": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js --watch",
+    "preprod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js ",
     "prod": "cross-env NODE_ENV=production node src/server/prod/index.js",
-    "start": "npm-run-all --parallel server dev-client"
+    "start": "npm-run-all --parallel dev-server dev-client"
   },
   "author": "George Filippakis <geo.filippakis@gmail.com> (https://github.com/Darmaiad)",
   "dependencies": {
@@ -29,7 +31,6 @@
     "lodash": "^4.17.11",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
-    "react-simple-file-input": "^2.1.0",
     "react-toastr": "^3.0.0",
     "uuid": "^3.3.2",
     "vision": "^5.4.3",

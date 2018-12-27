@@ -19,6 +19,7 @@ const initializeServer = async ({ port, host }) => {
         },
     });
 
+    // Register the plugins
     await server.register(plugins);
 
     // Setting the cookie to the server's cache
@@ -30,7 +31,7 @@ const initializeServer = async ({ port, host }) => {
     server.auth.strategy('jwt', 'jwt', jwtConfiguration(server));
 
     // Set default auth strategies. These strategies will apply to any routes declared AFTER this point
-    server.auth.default('session');
+    server.auth.default({ strategies: ['session', 'jwt'] });
 
     // Register the API routes
     await server.route(routes);
