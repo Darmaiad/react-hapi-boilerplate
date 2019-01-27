@@ -23,15 +23,13 @@ module.exports = {
         publicPath: '/',
     },
     module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                use: {
-                    loader: 'babel-loader',
-                },
-                exclude: /node_modules/,
+        rules: [{
+            test: /\.(js|jsx)$/,
+            use: {
+                loader: 'babel-loader',
             },
-        ],
+            exclude: /node_modules/,
+        }],
     },
     optimization: {
         splitChunks: {
@@ -39,6 +37,6 @@ module.exports = {
         },
     },
     resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', 'scss'],
     },
 };

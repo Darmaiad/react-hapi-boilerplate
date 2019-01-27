@@ -1,7 +1,9 @@
 import '@babel/polyfill';
 import React from 'react';
 import { render } from 'react-dom';
+
 import Root from './components/Root';
+import './assets/main.scss';
 
 render(<Root />, document.getElementById('AppContainer')); // eslint-disable-line react/jsx-filename-extension
 
@@ -9,7 +11,7 @@ render(<Root />, document.getElementById('AppContainer')); // eslint-disable-lin
 /* eslint prefer-arrow-callback: 0 */
 
 if (module.hot) {
-  module.hot.accept('./components/Root', function () { // Arrow function will not work
-    render(<Root />, document.getElementById('AppContainer'));
-  });
+    module.hot.accept('./components/Root', function () { // Arrow function will not work
+        render(<Root />, document.getElementById('AppContainer'));
+    });
 }
