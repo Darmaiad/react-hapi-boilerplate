@@ -10,12 +10,6 @@ import jwtConfiguration from '../auth/jwt/strategy';
 
 /* eslint no-console: 0 */
 
-const home = (request, h) => '<html><head><title>Login page</title></head><body><h3>Welcome ' +
-    request.auth.credentials.name +
-    '!</h3><br/><form method="get" action="/logout">' +
-    '<input type="submit" value="Logout">' +
-    '</form></body></html>';
-
 const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) => {
     const compiler = webpack(webpackConfig);
 
@@ -60,11 +54,6 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
     // Register the API routes
     await server.route(routes);
 
-    await server.route([
-        { method: 'GET', path: '/home', options: { handler: home } },
-    ]);
-
-
     // Serve the static content that webpack created
     // await server.route({
     //   method: 'GET',
@@ -77,7 +66,6 @@ const initializeServer = async ({ envConfig: { port, host }, webpackConfig }) =>
     //     },
     //   },
     // });
-
 
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);

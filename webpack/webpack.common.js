@@ -2,6 +2,8 @@ const Path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// For favicon generation: https://medium.com/tech-angels-publications/bundle-your-favicons-with-webpack-b69d834b2f53
+
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
