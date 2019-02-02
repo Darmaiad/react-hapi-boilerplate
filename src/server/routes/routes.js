@@ -1,6 +1,9 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
-const { generate, genericGet, genericPost, logout, login, token, getConfiguration } = require('../manager');
+import hanlders from '../handlers';
+import AbstractManager from '../managers/abstractManager';
+
+const { generate, genericGet, genericPost, logout, login, token, getConfiguration } = hanlders;
 
 const routes = [{
     method: 'GET',
@@ -10,14 +13,14 @@ const routes = [{
         description: 'Generate crumb token for the given client',
         notes: 'Generate crumb token for the given client',
     },
-    handler: generate,
+    handler: AbstractManager(generate),
 }, {
     method: 'GET',
     path: '/logout',
     options: {
         tags: ['api'],
     },
-    handler: logout,
+    handler: AbstractManager(logout),
 }, {
     method: 'GET',
     path: '/generic',
@@ -26,7 +29,7 @@ const routes = [{
         notes: 'generic endpoint note',
         tags: ['api'],
     },
-    handler: genericGet,
+    handler: AbstractManager(genericGet),
 }, {
     method: 'POST',
     path: '/generic',
@@ -38,7 +41,7 @@ const routes = [{
             headers: Joi.object({ 'X-CSRF-Token': Joi.string() }).unknown(0).label('Headers'),
         },
     },
-    handler: genericPost,
+    handler: AbstractManager(genericPost),
 }, {
     method: ['POST'],
     path: '/login',
@@ -58,7 +61,7 @@ const routes = [{
             },
         },
     },
-    handler: login,
+    handler: AbstractManager(login),
 }, {
     method: ['GET'],
     path: '/login',
@@ -67,7 +70,7 @@ const routes = [{
         plugins: { 'hapi-auth-cookie': { redirectTo: false } },
         tags: ['api'],
     },
-    handler: login,
+    handler: AbstractManager(login),
 }, {
     method: 'GET',
     path: '/unrestricted',
@@ -78,9 +81,8 @@ const routes = [{
         tags: ['api'],
     },
 
-    handler: (request, h) => ({ text: 'Token not required' }),
-},
-{
+    handler: AbstractManager((request, h) => ({ text: 'Token not required' })),
+}, {
     method: 'GET',
     path: '/restricted',
     options: {
@@ -91,11 +93,11 @@ const routes = [{
             headers: Joi.object({ authorization: Joi.string().label('Token') }).unknown(0).label('Headers'),
         },
     },
-    handler: (request, h) => {
+    handler: AbstractManager((request, h) => {
         const response = h.response({ message: 'You used a Valid JWT Token to access /restricted endpoint!' });
         response.header('Authorization', request.headers.authorization);
         return response;
-    },
+    }),
 }, {
     method: 'POST',
     path: '/token',
@@ -116,7 +118,7 @@ const routes = [{
         },
 
     },
-    handler: token,
+    handler: AbstractManager(token),
 }, {
     method: 'GET',
     path: '/config',
@@ -127,7 +129,7 @@ const routes = [{
         tags: ['api'],
     },
 
-    handler: getConfiguration,
+    handler: AbstractManager(getConfiguration),
 }];
 
 module.exports = routes;

@@ -76,4 +76,4 @@ const handlers = {
     getConfiguration: (request, h) => h.response(config),
 };
 
-module.exports = handlers;
+export default handlers;
