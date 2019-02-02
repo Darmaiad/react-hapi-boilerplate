@@ -4,6 +4,8 @@ import v4 from 'uuid';
 
 import db from './db';
 
+import config from '../../config';
+
 // Site that can simulate third party APIs
 const url = 'https://jsonplaceholder.typicode.com/posts/1';
 
@@ -69,7 +71,9 @@ const handlers = {
 
     genericPost: async (request, h) => h.response('Generic POST reply'),
 
-    token: async (request, h) => h.response(JWT.sign(db.jo, privateKey)), // synchronous
+    token: async (request, h) => h.response(JWT.sign(db.jo, privateKey)), // JWT sign is synchronous
+
+    getConfiguration: (request, h) => h.response(config),
 };
 
 module.exports = handlers;

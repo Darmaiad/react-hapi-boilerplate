@@ -1,5 +1,6 @@
 const Joi = require('joi');
-const { generate, genericGet, genericPost, logout, login, token } = require('../manager');
+
+const { generate, genericGet, genericPost, logout, login, token, getConfiguration } = require('../manager');
 
 const routes = [{
     method: 'GET',
@@ -116,6 +117,17 @@ const routes = [{
 
     },
     handler: token,
+}, {
+    method: 'GET',
+    path: '/config',
+    options: {
+        auth: false,
+        description: 'Get current configuration object',
+        notes: 'Get current configuration object',
+        tags: ['api'],
+    },
+
+    handler: getConfiguration,
 }];
 
 module.exports = routes;
