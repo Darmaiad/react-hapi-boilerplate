@@ -1,4 +1,9 @@
+@import "fonts";
 @import "variables";
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
 
 .simple {
     color: $primary-color;
