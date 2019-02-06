@@ -5,8 +5,11 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 
 // For favicon generation: https://medium.com/tech-angels-publications/bundle-your-favicons-with-webpack-b69d834b2f53
 
+const mode = process.env.NODE_ENV;
+const isProd = mode === 'production';
+
 module.exports = {
-    mode: process.env.NODE_ENV,
+    mode,
     entry: {
         app: [
             './src/index.js',
@@ -16,8 +19,16 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            title: 'RH Boilerplate',
+            title: `${mode.substring(1, -1).toUpperCase()}${mode.substring(1)}`,
             template: Path.join(__dirname, '../src/index.html'),
+            minify: isProd ? {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true,
+            } : {},
         }),
         new ManifestPlugin({
             fileName: 'asset-manifest.json',
