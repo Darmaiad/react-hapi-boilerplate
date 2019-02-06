@@ -37,6 +37,7 @@
     "uuid": "^3.3.2",
     "vision": "^5.4.4",
     "webpack": "^4.29.0",
+    "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1"
   },
   "devDependencies": {

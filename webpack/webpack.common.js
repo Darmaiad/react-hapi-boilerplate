@@ -1,6 +1,7 @@
 const Path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 // For favicon generation: https://medium.com/tech-angels-publications/bundle-your-favicons-with-webpack-b69d834b2f53
 
@@ -17,6 +18,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'RH Boilerplate',
             template: Path.join(__dirname, '../src/index.html'),
+        }),
+        new ManifestPlugin({
+            fileName: 'asset-manifest.json',
         }),
     ],
     output: {
