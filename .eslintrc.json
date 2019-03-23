@@ -9,7 +9,8 @@
     "plugins": [
         "react",
         "import",
-        "promise"
+        "promise",
+        "react-hooks"
     ],
     "parser": "babel-eslint",
     "parserOptions": {
@@ -37,6 +38,8 @@
         ],
         "object-curly-newline": 0,
         "max-len": [1, 180],
-        "indent": [1, 4]
+        "indent": [1, 4],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
 }
