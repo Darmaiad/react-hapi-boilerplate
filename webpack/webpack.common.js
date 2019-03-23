@@ -17,7 +17,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: `${mode.substring(1, -1).toUpperCase()}${mode.substring(1)}`,
             template: Path.join(__dirname, '../src/index.html'),
