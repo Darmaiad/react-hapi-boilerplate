@@ -1,4 +1,4 @@
-import Hapi from 'hapi';
+import Hapi from '@hapi/hapi';
 import WebpackPlugin from 'hapi-webpack-plugin';
 import webpack from 'webpack';
 

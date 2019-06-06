@@ -1,4 +1,4 @@
-import Hapi from 'hapi';
+import Hapi from '@hapi/hapi';
 
 import routes from '../routes/routes';
 import plugins from '../plugins';
@@ -39,7 +39,7 @@ const initializeServer = async ({ port, host }) => {
     // Serve the static content that webpack created
     await server.route({
         method: 'GET',
-        path: '/{path*}',
+        path: '/{param*}',
         handler: {
             directory: {
                 path: './../../../dist',
