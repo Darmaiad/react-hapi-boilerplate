@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 
 import hanlders from '../handlers';
 import AbstractManager from '../managers/abstractManager';
@@ -50,7 +50,7 @@ const routes = [{
         // Any request that does not adhere to the session strategy will be redicted to /login
         // weel, we must prevent this one from redirecting to itself
         plugins: {
-            'hapi-auth-cookie': { redirectTo: false },
+            cookie: { redirectTo: false },
             crumb: false,
         },
         tags: ['api'],
@@ -67,7 +67,7 @@ const routes = [{
     path: '/login',
     options: {
         auth: { mode: 'try' },
-        plugins: { 'hapi-auth-cookie': { redirectTo: false } },
+        plugins: { cookie: { redirectTo: false } },
         tags: ['api'],
     },
     handler: AbstractManager(login),
@@ -113,7 +113,7 @@ const routes = [{
             },
         },
         plugins: {
-            'hapi-auth-cookie': { redirectTo: false },
+            cookie: { redirectTo: false },
             crumb: false,
         },
 

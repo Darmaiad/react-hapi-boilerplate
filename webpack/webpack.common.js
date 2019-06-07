@@ -1,5 +1,5 @@
 const Path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
@@ -13,11 +13,12 @@ module.exports = {
     entry: {
         app: [
             './src/index.js',
+            // './src/client/index.js',
             // another: './src/another-module.js',
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({ verbose: true }),
         new HtmlWebpackPlugin({
             title: `${mode.substring(1, -1).toUpperCase()}${mode.substring(1)}`,
             template: Path.join(__dirname, '../src/index.html'),

@@ -2,7 +2,7 @@ import Inert from '@hapi/inert';
 import Vision from '@hapi/vision';
 import Crumb from '@hapi/crumb';
 import HapiSwagger from 'hapi-swagger';
-import HapiAuthCookie from 'hapi-auth-cookie';
+import HapiAuthCookie from '@hapi/cookie';
 import HapiAuthJwt2 from 'hapi-auth-jwt2';
 
 const plugins = [
