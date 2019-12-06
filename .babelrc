@@ -3,7 +3,7 @@
         "@babel/preset-react",
         ["@babel/preset-env", {
             "useBuiltIns": "usage",
-            "corejs": { "version": "3.4" }
+            "corejs": { "version": "3.4.7" }
         }]    
     ],
     "plugins": [
