@@ -1,4 +1,5 @@
 import Hapi from '@hapi/hapi';
+import Joi from '@hapi/joi';
 
 import routes from '../routes/routes';
 import plugins from '../plugins';
@@ -20,6 +21,7 @@ const initializeServer = async ({ port, host }) => {
     });
 
     await server.register(plugins);
+    server.validator(Joi);
 
     // Setting the cookie to the server's cache
     const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
