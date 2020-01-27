@@ -1,14 +1,26 @@
 {
-    "presets": [
-        "@babel/preset-react",
-        ["@babel/preset-env", {
-            "useBuiltIns": "usage",
-            "corejs": { "version": "3.6.4" }
-        }]    
-    ],
-    "plugins": [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-transform-async-to-generator"
-    ]
+    "env": {
+        "client": {
+            "presets": [
+                "@babel/preset-react",
+                ["@babel/preset-env", {
+                    "useBuiltIns": "usage",
+                    "corejs": { "version": "3.6.4" }
+                }]    
+            ],
+            "plugins": [
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-proposal-object-rest-spread",
+                "@babel/plugin-transform-async-to-generator"
+            ]
+        },
+        "server": {
+            "presets": [
+                ["@babel/preset-env", {
+                    "useBuiltIns": "usage",
+                    "corejs": { "version": "3.6.4" }
+                }]    
+            ]
+        }
+    }
 }
